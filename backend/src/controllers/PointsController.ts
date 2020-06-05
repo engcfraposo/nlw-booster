@@ -23,6 +23,13 @@ export default class PointsController {
         .distinct()
         .select('points.*');
 
+        const serializedPoints = points.map(point => {
+            return {
+                ...point,
+                image_url: `http://192.168.0.77:3001/uploads/${point.image}`
+            }
+        })
+
 
         return response.json( points )
     }
@@ -35,6 +42,13 @@ export default class PointsController {
 
         if (!point) {
             return response.status(400).json({Message: 'Point not found!'});
+        }
+
+        const serializedPoints = {
+
+                ...point,
+                image_url: `http://192.168.0.77:3001/uploads/${point.image}`
+                
         }
 
         const items =  await knex('items')
@@ -61,7 +75,7 @@ export default class PointsController {
             const transaction = await knex.transaction()
 
             const point = {
-                image: 'image-fake',
+                image: request.file.filename,
                 name,
                 email,
                 whatsapp,
@@ -75,7 +89,10 @@ export default class PointsController {
         
             const point_id = insertedIds[0];
         
-            const pointItems = items.map((item_id: number) => {
+            const pointItems = items
+            .split(',')
+            .map((item: string) => Number(item.trim()))
+            .map((item_id: number) => {
                 return {
                     item_id,
                     point_id,
