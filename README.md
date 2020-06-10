@@ -1,7 +1,7 @@
 # nlw-booster
  
 <h1 align="center">
-    <img alt="Ecoleta" title="Ecoleta" src="src/assets/ecoleta.svg" width="220px" />
+    <img alt="Ecoleta" title="Ecoleta" src="backend/src/assets/ecoleta.svg" width="220px" />
 </h1>
 
 <p align="center">
