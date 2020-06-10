@@ -35,14 +35,15 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 Esse projeto foi desenvolvido com as seguintes linguagens e bibliotecas:
 
-### linguagens:
+linguagens:
+
 -Typescript
 -JavaScript
 -SQL
 -HTML5
 -CSS3
 
-###Bibliotecas:
+Bibliotecas:
 
 -Leaflet/React-Leaflet
 -React-native-maps
