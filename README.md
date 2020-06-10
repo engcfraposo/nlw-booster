@@ -42,10 +42,13 @@ Esse projeto foi desenvolvido com as seguintes linguagens e bibliotecas:
 -HTML5
 -CSS3
 
-#Bibliotecas:
+###Bibliotecas:
 
 -Leaflet/React-Leaflet
 -React-native-maps
+-knex
+-cors
+-jest
 
 ## 💻 Projeto
 
