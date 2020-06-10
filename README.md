@@ -1,5 +1,3 @@
-# nlw-booster
- 
 <h1 align="center">
     <img alt="Ecoleta" title="Ecoleta" src=".github/ecoleta.svg" width="220px" />
 </h1>
@@ -32,6 +30,22 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - [React](https://reactjs.org)
 - [React Native](https://facebook.github.io/react-native/)
 - [Expo](https://expo.io/)
+
+## 🧐 Linguaguens e Bibliotecas
+
+Esse projeto foi desenvolvido com as seguintes linguagens e bibliotecas:
+
+### linguagens:
+-Typescript
+-JavaScript
+-SQL
+-HTML5
+-CSS3
+
+#Bibliotecas:
+
+-Leaflet/React-Leaflet
+-React-native-maps
 
 ## 💻 Projeto
 
