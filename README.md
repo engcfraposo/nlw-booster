@@ -1,7 +1,7 @@
 # nlw-booster
  
 <h1 align="center">
-    <img alt="Ecoleta" title="Ecoleta" src=".github/ecoleta.png" width="220px" />
+    <img alt="Ecoleta" title="Ecoleta" src=".github/ecoleta.svg" width="220px" />
 </h1>
 
 <p align="center">
@@ -56,4 +56,4 @@ Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE.md) para
 
 ---
 
-Feito com ♥ by Rocketseat :wave: [Participe da nossa comunidade!](https://discordapp.com/invite/gCRAFhc)
+Feito com ♥ by Cláudio Filipe Lima Rapôso with Rocketseat :wave: [Participe da nossa comunidade!](https://discordapp.com/invite/gCRAFhc)
