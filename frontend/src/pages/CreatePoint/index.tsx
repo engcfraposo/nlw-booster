@@ -1,201 +1,195 @@
-import React, { useState , useEffect, ChangeEvent, FormEvent } from 'react';
-import { Link, useHistory } from 'react-router-dom'
-import { LeafletMouseEvent } from 'leaflet'
-import { Map, TileLayer, Marker } from 'react-leaflet'
-import axios from 'axios'
-import {FiArrowLeft} from 'react-icons/fi'
+/* eslint-disable camelcase */
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable react/jsx-closing-bracket-location */
+/* eslint-disable react/jsx-tag-spacing */
+/* eslint-disable no-shadow */
+/* eslint-disable no-alert */
+/* eslint-disable react/jsx-indent-props */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable react/jsx-indent */
+/* eslint-disable prettier/prettier */
+import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { LeafletMouseEvent } from 'leaflet';
+import { Map, TileLayer, Marker } from 'react-leaflet';
+import axios from 'axios';
+import { FiArrowLeft } from 'react-icons/fi';
 
-import Dropzone from '../../components/Dropzone'
+import Dropzone from '../../components/Dropzone';
 
-import logo from '../../assets/logo.svg'
+import logo from '../../assets/logo.svg';
 
-import api from '../../services/api'
+import api from '../../services/api';
 
 import './styles.css';
 
-
 const CreatePoint: React.FC = () => {
+  interface Item {
+    id: number;
+    title: string;
+    image_url: string;
+  }
 
-    interface Item {
-        id: number,
-        title: string,
-        image_url: string,
-    }
+  interface IBGEUFResponse {
+    sigla: string;
+  }
 
-    interface IBGEUFResponse {
-        sigla: string,
-    }
+  interface IBGECityResponse {
+    nome: string;
+  }
 
-    interface IBGECityResponse {
-        nome: string,
-    }
-    
+  const [initialPosition, setInitialPosition] = useState<[number, number]>([
+    0,
+    0,
+  ]);
 
-    const [initialPosition, setInitialPosition] = useState<[number, number]>([0,0]);
+  const [items, setItems] = useState<Item[]>([]);
+  const [ufs, setUfs] = useState<string[]>([]);
+  const [cities, setCities] = useState<string[]>([]);
 
-    const [items, setItems] = useState<Item[]>([]);
-    const [ufs, setUfs] = useState<string[]>([]);
-    const [cities, setCities] = useState<string[]>([]);
+  const [selectedUf, setSelectedUf] = useState<string>('0');
+  const [selectedCity, setSelectedCity] = useState<string>('0');
+  const [selectedPosition, setSelectedPosition] = useState<[number, number]>([
+    0,
+    0,
+  ]);
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [selectedFile, setSelectedFile] = useState<File>();
 
-    const [selectedUf, setSelectedUf] = useState<string>('0');
-    const [selectedCity, setSelectedCity] = useState<string>('0');
-    const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0,0]);
-    const [selectedItems, setSelectedItems] = useState<number[]>([]);
-    const [selectedFile, setSelectedFile] = useState<File>();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    whatsapp: '',
+  });
 
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        whatsapp: '',
+  const history = useHistory();
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+
+      setInitialPosition([latitude, longitude]);
     });
+  }, []);
 
-    const history = useHistory();
+  useEffect(() => {
+    api.get('items').then((response) => {
+      setItems(response.data);
+    });
+  }, []);
 
-    useEffect(()=> {
+  useEffect(() => {
+    axios
+      .get<IBGEUFResponse[]>(
+        'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
+      )
+      .then((response) => {
+        const ufInitials = response.data.map((uf) => uf.sigla);
 
-        navigator.geolocation.getCurrentPosition(position => {
+        setUfs(ufInitials);
+      });
+  }, []);
 
-            const { latitude , longitude } = position.coords
-
-            setInitialPosition([ latitude , longitude ])
-        })
-
-    }, [])
-
-    useEffect(()=> {
-
-        api.get('items').then(response => {
-            
-            setItems(response.data);
-
-        })
-
-    }, [])
-
-    useEffect(()=> {
-
-        axios.get<IBGEUFResponse[]>('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {
-            
-            const ufInitials = response.data.map(uf => uf.sigla);
-            
-            setUfs(ufInitials)
-
-        })
-
-    }, [])
-
-    useEffect(()=> {
-
-        if(selectedUf === '0') {return;} 
-
-        axios.get<IBGECityResponse[]>(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUf}/municipios`).then(response => {
-            
-            const cityNames = response.data.map(city => city.nome);
-            
-            setCities(cityNames)
-
-        })
-
-    }, [selectedUf])
-
-    function handleSelectUf(event: ChangeEvent<HTMLSelectElement> ) {
-
-       const uf =  event.target.value
-
-       setSelectedUf(uf)
-
+  useEffect(() => {
+    if (selectedUf === '0') {
+      return;
     }
 
-    function handleSelectCity(event: ChangeEvent<HTMLSelectElement> ) {
+    axios
+      .get<IBGECityResponse[]>(
+        `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUf}/municipios`,
+      )
+      .then((response) => {
+        const cityNames = response.data.map((city) => city.nome);
 
-        const city =  event.target.value
- 
-        setSelectedCity(city)
- 
-     }
+        setCities(cityNames);
+      });
+  }, [selectedUf]);
 
-     function handleMapClick(event: LeafletMouseEvent) {
+  function handleSelectUf(event: ChangeEvent<HTMLSelectElement>) {
+    const uf = event.target.value;
 
-        setSelectedPosition([
-            event.latlng.lat,
-            event.latlng.lng
-        ])
- 
-     }
+    setSelectedUf(uf);
+  }
 
-     function handleInputChange(event: ChangeEvent<HTMLInputElement> ) {
+  function handleSelectCity(event: ChangeEvent<HTMLSelectElement>) {
+    const city = event.target.value;
 
-        const { name , value } = event.target;
+    setSelectedCity(city);
+  }
 
-        setFormData({...formData, [name]: value})
- 
-     }
+  function handleMapClick(event: LeafletMouseEvent) {
+    setSelectedPosition([event.latlng.lat, event.latlng.lng]);
+  }
 
-     function handleSelectedItem(id: number) {
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
 
-        const alreadySelected = selectedItems.findIndex(item => item === id);
+    setFormData({ ...formData, [name]: value });
+  }
 
-        if (alreadySelected >= 0) {
+  function handleSelectedItem(id: number) {
+    const alreadySelected = selectedItems.findIndex((item) => item === id);
 
-            const filteredItems = selectedItems.filter(item => item !== id)
+    if (alreadySelected >= 0) {
+      const filteredItems = selectedItems.filter((item) => item !== id);
 
-            setSelectedItems(filteredItems)
+      setSelectedItems(filteredItems);
+    } else {
+      setSelectedItems([...selectedItems, id]);
+    }
+  }
 
-        } else {
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
 
-            setSelectedItems([...selectedItems, id])
+    const { name, email, whatsapp } = formData;
 
-        }
+    const uf = selectedUf;
 
-        
- 
-     }
+    const city = selectedCity;
 
-     async function handleSubmit(event: FormEvent ) {
+    const [latitude, longitude] = selectedPosition;
 
-        event.preventDefault();
+    const items = selectedItems;
 
-        const { name, email, whatsapp } = formData;
+    const data = new FormData();
 
-        const uf = selectedUf;
+    data.append('name', name);
+    data.append('email', email);
+    data.append('whatsapp', whatsapp);
+    data.append('uf', uf);
+    data.append('city', city);
+    data.append('latitude', String(latitude));
+    data.append('longitude', String(longitude));
+    data.append('items', items.join(','));
 
-        const city = selectedCity;
+    if (selectedFile) {
+      data.append('image', selectedFile);
+    }
 
-        const [ latitude , longitude ] = selectedPosition;
+    await api.post('points', data);
 
-        const items = selectedItems;
+    alert('Ponto de alerta criado!');
 
-        const data = new FormData();
-
-        data.append('name', name);
-        data.append('email',email);
-        data.append('whatsapp', whatsapp);
-        data.append('uf', uf);
-        data.append('city', city);
-        data.append('latitude',String(latitude));
-        data.append('longitude', String(longitude));
-        data.append('items', items.join(','));
-        
-        if(selectedFile){data.append('image', selectedFile)}
-
-        await api.post('points', data);
-        
-        alert('Ponto de alerta criado!');
-
-        history.push('/');
-     }
+    history.push('/');
+  }
 
   return (
     <div id="page-create-point">
-            
+
             <header>
-                
+
                     <img src={logo} alt="Ecoleta"/>
                     <Link to="/">
                         <FiArrowLeft />
                         Voltar para home
                     </Link>
-                
+
             </header>
 
 
@@ -208,39 +202,39 @@ const CreatePoint: React.FC = () => {
                 <fieldset>
                     <legend>
                         <h2>Dados</h2>
-                        
+
                     </legend>
 
                     <div className="field">
                             <label htmlFor="name">Nome da entidade</label>
-                            <input 
+                            <input
                                 type="text"
                                 name="name"
                                 id="name"
                                 onChange={handleInputChange}
-                                
+
                             />
                     </div>
 
                     <div className="field-group">
                         <div className="field">
                                 <label htmlFor="email">E-mail</label>
-                                <input 
+                                <input
                                     type="email"
                                     name="email"
                                     id="email"
                                     onChange={handleInputChange}
-                                    
+
                                 />
                         </div>
                         <div className="field">
                             <label htmlFor="whatsapp">Whatsapp</label>
-                            <input 
+                            <input
                                 type="text"
                                 name="whatsapp"
                                 id="whatsapp"
                                 onChange={handleInputChange}
-                                
+
                             />
                         </div>
                     </div>
@@ -261,14 +255,14 @@ const CreatePoint: React.FC = () => {
 
                     <Marker position={selectedPosition} />
 
-                        
+
                     </Map>
 
                     <div className="field-group">
 
                     <div className="field">
                             <label htmlFor="uf">Estado (UF)</label>
-                            <select 
+                            <select
                                 name="uf"
                                 id="uf"
                                 value={selectedUf}
@@ -283,7 +277,7 @@ const CreatePoint: React.FC = () => {
 
                     <div className="field">
                             <label htmlFor="city">Cidade</label>
-                            <select 
+                            <select
                                 name="city"
                                 id="city"
                                 value={selectedCity}
@@ -297,7 +291,7 @@ const CreatePoint: React.FC = () => {
                     </div>
 
 
-                        
+
                     </div>
 
                 </fieldset>
@@ -310,16 +304,16 @@ const CreatePoint: React.FC = () => {
 
                     <ul className="items-grid">
                         {items.map( item =>(
-                            <li 
-                                key={item.id} 
+                            <li
+                                key={item.id}
                                 onClick={() => handleSelectedItem(item.id)}
                                 className={selectedItems.includes(item.id)? 'selected' : ''}>
                                 <img src={item.image_url} alt={item.title}/>
                                 <span>{item.title}</span>
                             </li>
                         ))}
-                        
-                        
+
+
 
                     </ul>
 
