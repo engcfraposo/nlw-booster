@@ -1,3 +1,5 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
@@ -11,6 +13,6 @@ app.use(express.json());
 
 app.use(routes);
 
-app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')))
+app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
 
 app.listen(3001);
