@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import Constants from 'expo-constants'
+import Constants from 'expo-constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,13 +28,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     marginTop: 8,
-    color: '#6C6C80'
+    color: '#6C6C80',
   },
 
   address: {
     marginTop: 32,
   },
-  
+
   addressTitle: {
     color: '#322153',
     fontFamily: 'Roboto_500Medium',
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto_400Regular',
     lineHeight: 24,
     marginTop: 8,
-    color: '#6C6C80'
+    color: '#6C6C80',
   },
 
   footer: {
@@ -54,9 +54,9 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 32,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
-  
+
   button: {
     width: '48%',
     backgroundColor: '#34CB79',
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     height: 50,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   buttonText: {
@@ -75,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles
+export default styles;

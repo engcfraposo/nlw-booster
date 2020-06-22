@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
- const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 32,
@@ -57,7 +57,7 @@ import { StyleSheet } from 'react-native';
     width: 60,
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   buttonText: {
@@ -67,9 +67,7 @@ import { StyleSheet } from 'react-native';
     color: '#FFF',
     fontFamily: 'Roboto_500Medium',
     fontSize: 16,
-  }
+  },
 });
 
-
-export default styles
-
+export default styles;
